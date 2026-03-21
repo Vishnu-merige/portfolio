@@ -1,209 +1,810 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Vishnu Merige | Full Stack Developer</title>
+<meta name="description" content="Portfolio of Vishnu Merige — Full Stack Developer skilled in JavaScript, Node.js, Next.js, MySQL, Python, and UI/UX Design">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c14;
+    --bg2: #0d1220;
+    --bg3: #111827;
+    --accent: #00d4aa;
+    --accent2: #3b82f6;
+    --accent-dim: rgba(0,212,170,0.12);
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --border: rgba(255,255,255,0.07);
+    --card: rgba(17,24,39,0.8);
+  }
 
-<!-- SEO -->
-<meta name="description" content="Portfolio of Vishnu Merige - Full Stack Developer skilled in JavaScript, Node.js, MySQL, and modern web technologies">
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-<link rel="stylesheet" href="style.css">
+  html { scroll-behavior: smooth; }
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
 
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── NAV ── */
+  header {
+    position: fixed; top: 0; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 5%;
+    background: rgba(8,12,20,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.2rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+  .logo span { color: var(--text); }
+
+  nav ul { list-style: none; display: flex; gap: 2rem; }
+  nav a {
+    text-decoration: none; color: var(--muted);
+    font-size: 0.88rem; font-weight: 500;
+    transition: color 0.2s; letter-spacing: 0.03em;
+  }
+  nav a:hover { color: var(--accent); }
+
+  /* ── SECTIONS ── */
+  section { padding: 6rem 8%; position: relative; z-index: 1; }
+
+  .section-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem; color: var(--accent);
+    letter-spacing: 0.18em; text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+
+  h2.section-title {
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 600; color: var(--text);
+    margin-bottom: 3rem;
+  }
+  h2.section-title span { color: var(--accent); }
+
+  /* ── HERO ── */
+  #home {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding-top: 5rem;
+    background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,212,170,0.08) 0%, transparent 70%);
+  }
+
+  .hero-inner { max-width: 720px; }
+
+  .hero-greeting {
+    font-family: 'Space Mono', monospace;
+    color: var(--accent); font-size: 0.9rem;
+    letter-spacing: 0.2em; margin-bottom: 1rem;
+    opacity: 0; animation: fadeUp 0.6s 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 600; line-height: 1.1;
+    color: var(--text);
+    opacity: 0; animation: fadeUp 0.7s 0.4s forwards;
+  }
+  .hero h1 .name { color: var(--accent); display: block; }
+
+  .hero-role {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--muted); margin: 1.2rem 0 1.6rem;
+    opacity: 0; animation: fadeUp 0.7s 0.6s forwards;
+  }
+  .hero-role .blink { animation: blink 1s step-end infinite; }
+
+  .hero p {
+    font-size: 1.05rem; color: #94a3b8; max-width: 540px;
+    opacity: 0; animation: fadeUp 0.7s 0.8s forwards;
+    line-height: 1.8;
+  }
+
+  .hero-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    margin-top: 2.4rem;
+    opacity: 0; animation: fadeUp 0.7s 1s forwards;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.75rem 1.6rem;
+    background: var(--accent); color: #080c14;
+    font-weight: 600; font-size: 0.9rem;
+    border-radius: 4px; text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none; cursor: pointer;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,212,170,0.3); }
+
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.75rem 1.6rem;
+    border: 1px solid var(--accent); color: var(--accent);
+    font-weight: 600; font-size: 0.9rem;
+    border-radius: 4px; text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+    background: transparent;
+  }
+  .btn-outline:hover { background: var(--accent-dim); transform: translateY(-2px); }
+
+  /* Floating grid bg */
+  .hero-grid {
+    position: absolute; right: 0; top: 0; bottom: 0; width: 42%;
+    background-image:
+      linear-gradient(rgba(0,212,170,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,170,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse 80% 80% at 80% 50%, black 30%, transparent 80%);
+    z-index: 0;
+  }
+
+  /* ── ABOUT ── */
+  #about { background: var(--bg2); }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .about-text p { color: #94a3b8; margin-bottom: 1.2rem; font-size: 1rem; }
+
+  .stat-row { display: flex; gap: 2.5rem; margin-top: 2rem; flex-wrap: wrap; }
+  .stat { text-align: left; }
+  .stat .num {
+    font-family: 'Space Mono', monospace;
+    font-size: 2.2rem; font-weight: 700; color: var(--accent);
+    line-height: 1;
+  }
+  .stat .lbl { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+
+  .about-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 2rem;
+    backdrop-filter: blur(8px);
+  }
+  .about-card h3 {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem; color: var(--accent);
+    letter-spacing: 0.15em; margin-bottom: 1.2rem;
+    text-transform: uppercase;
+  }
+  .tag-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag {
+    padding: 0.3rem 0.8rem;
+    background: var(--accent-dim);
+    border: 1px solid rgba(0,212,170,0.2);
+    border-radius: 4px; font-size: 0.82rem; color: var(--accent);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* ── SKILLS ── */
+  #skills { background: var(--bg); }
+  .skills-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+
+  .skill-group {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.6rem;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .skill-group:hover { border-color: rgba(0,212,170,0.3); transform: translateY(-3px); }
+
+  .skill-group h3 {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem; color: var(--accent);
+    letter-spacing: 0.14em; text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .skill-list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .skill-item {
+    padding: 0.25rem 0.65rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 3px; font-size: 0.82rem; color: #cbd5e1;
+  }
+
+  /* ── EXPERIENCE ── */
+  #experience { background: var(--bg2); }
+  .exp-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 2rem;
+    position: relative; overflow: hidden;
+  }
+  .exp-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--accent);
+  }
+  .exp-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem; }
+  .exp-title { font-size: 1.1rem; font-weight: 600; color: var(--text); }
+  .exp-company { color: var(--accent); font-size: 0.9rem; margin-bottom: 0.3rem; }
+  .exp-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem; color: var(--muted);
+    background: rgba(255,255,255,0.04); padding: 0.25rem 0.7rem; border-radius: 20px;
+    border: 1px solid var(--border);
+  }
+  .exp-list { list-style: none; margin-top: 0.8rem; }
+  .exp-list li { color: #94a3b8; font-size: 0.95rem; padding: 0.3rem 0 0.3rem 1.2rem; position: relative; }
+  .exp-list li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); }
+
+  /* ── PROJECTS ── */
+  #projects { background: var(--bg); }
+  .projects-tabs { display: flex; gap: 0.5rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+  .tab-btn {
+    padding: 0.45rem 1.1rem;
+    background: transparent; border: 1px solid var(--border);
+    border-radius: 4px; color: var(--muted); font-size: 0.85rem;
+    cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+  }
+  .tab-btn.active, .tab-btn:hover { background: var(--accent-dim); border-color: rgba(0,212,170,0.4); color: var(--accent); }
+
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+
+  .project-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.8rem;
+    transition: border-color 0.3s, transform 0.3s;
+    display: flex; flex-direction: column;
+  }
+  .project-card:hover { border-color: rgba(0,212,170,0.35); transform: translateY(-4px); }
+
+  .project-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; }
+  .project-icon { font-size: 1.4rem; }
+  .project-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; padding: 0.2rem 0.55rem;
+    border-radius: 20px; letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .badge-live { background: rgba(0,212,170,0.1); color: var(--accent); border: 1px solid rgba(0,212,170,0.25); }
+  .badge-wip { background: rgba(245,158,11,0.1); color: #f59e0b; border: 1px solid rgba(245,158,11,0.25); }
+  .badge-academic { background: rgba(59,130,246,0.1); color: var(--accent2); border: 1px solid rgba(59,130,246,0.25); }
+
+  .project-card h3 { font-size: 1.05rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+  .project-card p { color: #94a3b8; font-size: 0.9rem; flex: 1; margin-bottom: 1.2rem; }
+
+  .project-tech { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.2rem; }
+  .tech-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem; padding: 0.15rem 0.5rem;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+    border-radius: 3px; color: #94a3b8;
+  }
+
+  .project-links { display: flex; gap: 0.8rem; }
+  .project-links a {
+    font-size: 0.82rem; color: var(--accent); text-decoration: none;
+    font-weight: 500; transition: opacity 0.2s;
+    display: flex; align-items: center; gap: 0.3rem;
+  }
+  .project-links a:hover { opacity: 0.7; }
+
+  /* ── EDUCATION ── */
+  #education { background: var(--bg2); }
+  .edu-timeline { position: relative; padding-left: 2rem; }
+  .edu-timeline::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 1px; background: linear-gradient(to bottom, var(--accent), transparent);
+  }
+  .edu-item { position: relative; padding: 0 0 2.5rem 2rem; }
+  .edu-item::before {
+    content: ''; position: absolute; left: -2rem; top: 0.35rem;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); border: 2px solid var(--bg2);
+    box-shadow: 0 0 0 3px rgba(0,212,170,0.2);
+  }
+  .edu-degree { font-size: 1rem; font-weight: 600; color: var(--text); }
+  .edu-institution { color: var(--accent); font-size: 0.9rem; margin: 0.2rem 0; }
+  .edu-meta { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .edu-year {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem; color: var(--muted);
+  }
+  .edu-grade {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem; color: var(--accent);
+  }
+
+  /* ── CERTIFICATIONS ── */
+  #certifications { background: var(--bg); }
+  .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
+  .cert-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.2rem 1.4rem;
+    display: flex; gap: 1rem; align-items: flex-start;
+    transition: border-color 0.2s;
+  }
+  .cert-card:hover { border-color: rgba(0,212,170,0.3); }
+  .cert-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .cert-name { font-size: 0.9rem; font-weight: 500; color: var(--text); }
+  .cert-issuer { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--bg2); text-align: center; }
+  .contact-inner { max-width: 600px; margin: 0 auto; }
+  .contact-inner p { color: #94a3b8; margin-bottom: 2.5rem; font-size: 1.05rem; }
+
+  .contact-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-bottom: 2.5rem; }
+  .contact-link {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.7rem 1.4rem;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; text-decoration: none; color: var(--text);
+    font-size: 0.9rem; transition: all 0.2s;
+  }
+  .contact-link:hover { border-color: rgba(0,212,170,0.4); color: var(--accent); transform: translateY(-2px); }
+  .contact-link .icon { font-size: 1rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bg); border-top: 1px solid var(--border);
+    padding: 2rem 8%; text-align: center;
+    color: var(--muted); font-size: 0.85rem;
+  }
+  footer span { color: var(--accent); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+  .reveal {
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    section { padding: 4rem 5%; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    nav ul { gap: 1rem; }
+    .hero-grid { display: none; }
+    .stat-row { gap: 1.5rem; }
+  }
+</style>
 </head>
-
 <body>
 
+<!-- ── HEADER ── -->
 <header>
-
-<div class="logo">Vishnu</div>
-
-<nav>
-<ul>
-<li><a href="#home">Home</a></li>
-<li><a href="#about">About</a></li>
-<li><a href="#skills">Skills</a></li>
-<li><a href="#projects">Projects</a></li>
-<li><a href="#contact">Contact</a></li>
-</ul>
-</nav>
-
+  <div class="logo">VM<span>.dev</span></div>
+  <nav>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
 </header>
 
-<!-- HERO SECTION -->
-
+<!-- ── HERO ── -->
 <section id="home" class="hero">
-
-<div class="hero-content">
-
-<h1>Hello, I'm <span>Vishnu Merige</span></h1>
-
-<h2>Full Stack Developer</h2>
-
-<p>
-I build scalable web applications, modern UI designs, and real-world solutions using JavaScript, Node.js, and MySQL.
-</p>
-
-<div class="buttons">
-
-<a href="#projects" class="btn">View Projects</a>
-
-<a href="#contact" class="btn-outline">Hire Me</a>
-
-<a href="resume.pdf" class="btn">Download Resume</a>
-
-</div>
-
-</div>
-
+  <div class="hero-inner">
+    <p class="hero-greeting">// Hello, World!</p>
+    <h1>
+      I'm
+      <span class="name">Vishnu Merige</span>
+    </h1>
+    <p class="hero-role">Full Stack Developer<span class="blink">_</span></p>
+    <p>
+      ECE student & developer building scalable web applications, modern UI designs,
+      and real-world solutions with JavaScript, Node.js, and Python.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn">View Projects</a>
+      <a href="#contact" class="btn-outline">Hire Me</a>
+      <a href="resume.pdf" class="btn-outline">Download CV</a>
+    </div>
+  </div>
+  <div class="hero-grid"></div>
 </section>
 
-<!-- ABOUT -->
-
+<!-- ── ABOUT ── -->
 <section id="about">
-
-<h2>About Me</h2>
-
-<p>
-I am an Electronics and Communication Engineering student and passionate Full Stack Developer. 
-I specialize in building responsive web applications, e-commerce platforms, and scalable backend systems.
-</p>
-
-<p>
-I enjoy solving real-world problems and developing startup ideas like MECHALL using modern technologies.
-</p>
-
+  <div class="section-tag">01 / About</div>
+  <h2 class="section-title">Who I <span>Am</span></h2>
+  <div class="about-grid reveal">
+    <div class="about-text">
+      <p>
+        I'm a Full Stack Developer and Electronics & Communication Engineering student at
+        Mallareddy Engineering College, Hyderabad (Class of 2026). I specialize in building
+        responsive, scalable web applications and e-commerce platforms.
+      </p>
+      <p>
+        My passion lies at the intersection of software, IoT, and machine learning — solving
+        real-world problems through code. Currently developing MECHALL, a multi-service platform
+        for mechanics, rentals, and electronics.
+      </p>
+      <p>
+        I'm a quick learner with strong self-motivation, always eager to contribute to
+        innovative development teams and startup ecosystems.
+      </p>
+      <div class="stat-row">
+        <div class="stat"><div class="num">3+</div><div class="lbl">Web Projects</div></div>
+        <div class="stat"><div class="num">2</div><div class="lbl">Academic Projects</div></div>
+        <div class="stat"><div class="num">7.5</div><div class="lbl">CGPA</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="about-card">
+        <h3>// Soft Skills</h3>
+        <div class="tag-cloud">
+          <span class="tag">Problem Solving</span>
+          <span class="tag">Analytical Thinking</span>
+          <span class="tag">Teamwork</span>
+          <span class="tag">Time Management</span>
+          <span class="tag">Adaptability</span>
+          <span class="tag">Self-Motivated</span>
+          <span class="tag">Quick Learner</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- SKILLS -->
-
+<!-- ── SKILLS ── -->
 <section id="skills">
-
-<h2>Technical Skills</h2>
-
-<div class="skills-grid">
-
-<div class="skill">
-<h3>HTML5</h3>
-<div class="bar"><div style="width:95%"></div></div>
-</div>
-
-<div class="skill">
-<h3>CSS3</h3>
-<div class="bar"><div style="width:90%"></div></div>
-</div>
-
-<div class="skill">
-<h3>JavaScript</h3>
-<div class="bar"><div style="width:85%"></div></div>
-</div>
-
-<div class="skill">
-<h3>Node.js</h3>
-<div class="bar"><div style="width:80%"></div></div>
-</div>
-
-<div class="skill">
-<h3>MySQL</h3>
-<div class="bar"><div style="width:75%"></div></div>
-</div>
-
-<div class="skill">
-<h3>UI/UX Design</h3>
-<div class="bar"><div style="width:85%"></div></div>
-</div>
-
-</div>
-
+  <div class="section-tag">02 / Skills</div>
+  <h2 class="section-title">Technical <span>Expertise</span></h2>
+  <div class="skills-container reveal">
+    <div class="skill-group">
+      <h3>// Languages</h3>
+      <div class="skill-list">
+        <span class="skill-item">JavaScript</span>
+        <span class="skill-item">Python</span>
+        <span class="skill-item">TypeScript</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <h3>// Frontend</h3>
+      <div class="skill-list">
+        <span class="skill-item">HTML5</span>
+        <span class="skill-item">CSS3</span>
+        <span class="skill-item">Next.js</span>
+        <span class="skill-item">React</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <h3>// Backend</h3>
+      <div class="skill-list">
+        <span class="skill-item">Node.js</span>
+        <span class="skill-item">Express.js</span>
+        <span class="skill-item">REST APIs</span>
+        <span class="skill-item">OTP Auth</span>
+        <span class="skill-item">bcrypt</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <h3>// Database</h3>
+      <div class="skill-list">
+        <span class="skill-item">MySQL</span>
+        <span class="skill-item">CRUD Ops</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <h3>// UI/UX & Design</h3>
+      <div class="skill-list">
+        <span class="skill-item">Figma</span>
+        <span class="skill-item">Infographics</span>
+        <span class="skill-item">Shopify</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <h3>// Tools & Concepts</h3>
+      <div class="skill-list">
+        <span class="skill-item">Git</span>
+        <span class="skill-item">GitHub</span>
+        <span class="skill-item">VS Code</span>
+        <span class="skill-item">DSA</span>
+        <span class="skill-item">ML / SVM</span>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- PROJECTS -->
+<!-- ── EXPERIENCE ── -->
+<section id="experience">
+  <div class="section-tag">03 / Experience</div>
+  <h2 class="section-title">Work <span>Experience</span></h2>
+  <div class="exp-card reveal">
+    <div class="exp-header">
+      <div>
+        <div class="exp-title">Junior Developer</div>
+        <div class="exp-company">Skilltimate Technologies, Hyderabad</div>
+      </div>
+      <span class="exp-date">May 2023</span>
+    </div>
+    <ul class="exp-list">
+      <li>Developed responsive web interfaces using HTML, CSS, and JavaScript.</li>
+      <li>Gained hands-on experience in frontend frameworks and real-world development workflows.</li>
+      <li>Collaborated with the team to deliver client projects on schedule.</li>
+    </ul>
+  </div>
+</section>
 
+<!-- ── PROJECTS ── -->
 <section id="projects">
+  <div class="section-tag">04 / Projects</div>
+  <h2 class="section-title">Featured <span>Work</span></h2>
 
-<h2>Projects</h2>
+  <div class="projects-grid">
 
-<div class="projects-grid">
+    <div class="project-card reveal">
+      <div class="project-header">
+        <span class="project-icon">🛒</span>
+        <span class="project-badge badge-live">Live</span>
+      </div>
+      <h3>TrendWear E-Commerce</h3>
+      <p>Fully functional Shopify e-commerce platform with custom product pages, optimized user navigation, and structured product categorization.</p>
+      <div class="project-tech">
+        <span class="tech-tag">Shopify</span>
+        <span class="tech-tag">Liquid</span>
+        <span class="tech-tag">UI/UX</span>
+      </div>
+      <div class="project-links">
+        <a href="https://trendwear-store-2.myshopify.com/" target="_blank">↗ Live Store</a>
+      </div>
+    </div>
 
-<div class="project-card">
+    <div class="project-card reveal">
+      <div class="project-header">
+        <span class="project-icon">⚙️</span>
+        <span class="project-badge badge-wip">In Progress</span>
+      </div>
+      <h3>MECHALL Multi-Service App</h3>
+      <p>Multi-service platform for mechanics, rentals, and electronics with OTP-based authentication, REST APIs, and a responsive frontend.</p>
+      <div class="project-tech">
+        <span class="tech-tag">Node.js</span>
+        <span class="tech-tag">MySQL</span>
+        <span class="tech-tag">Express</span>
+        <span class="tech-tag">OTP Auth</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/Vishnu-merige" target="_blank">↗ GitHub</a>
+      </div>
+    </div>
 
-<h3>AGREEPURE</h3>
+    <div class="project-card reveal">
+      <div class="project-header">
+        <span class="project-icon">🌱</span>
+        <span class="project-badge badge-live">GitHub</span>
+      </div>
+      <h3>AGREEPURE</h3>
+      <p>Organic farming goods import/export platform with modern UI, scalable structure, and clean user experience design.</p>
+      <div class="project-tech">
+        <span class="tech-tag">HTML</span>
+        <span class="tech-tag">CSS</span>
+        <span class="tech-tag">JavaScript</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/Vishnu-merige/AGREEPURE" target="_blank">↗ GitHub</a>
+      </div>
+    </div>
 
-<p>Organic farming goods import/export platform with modern UI and scalable structure.</p>
+    <div class="project-card reveal">
+      <div class="project-header">
+        <span class="project-icon">⚡</span>
+        <span class="project-badge badge-live">GitHub</span>
+      </div>
+      <h3>Next.js Landing Page</h3>
+      <p>Modern, responsive landing page with reusable components, clean architecture, and scalable frontend design using Next.js and TypeScript.</p>
+      <div class="project-tech">
+        <span class="tech-tag">Next.js</span>
+        <span class="tech-tag">TypeScript</span>
+        <span class="tech-tag">React</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/Vishnu-merige/using-Next.js-and-typescript-creating-UI" target="_blank">↗ GitHub</a>
+      </div>
+    </div>
 
-<a href="https://github.com/Vishnu-merige/AGREEPURE" target="_blank">GitHub</a>
+    <div class="project-card reveal">
+      <div class="project-header">
+        <span class="project-icon">🔢</span>
+        <span class="project-badge badge-live">GitHub</span>
+      </div>
+      <h3>Scientific Calculator</h3>
+      <p>Advanced calculator with scientific functions built using vanilla HTML, CSS, and JavaScript with a clean, functional UI.</p>
+      <div class="project-tech">
+        <span class="tech-tag">HTML</span>
+        <span class="tech-tag">CSS</span>
+        <span class="tech-tag">JavaScript</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/Vishnu-merige/caluculator-" target="_blank">↗ GitHub</a>
+      </div>
+    </div>
 
-</div>
+    <div class="project-card reveal">
+      <div class="project-header">
+        <span class="project-icon">🔥</span>
+        <span class="project-badge badge-academic">Academic</span>
+      </div>
+      <h3>Fire & Gas Detection System</h3>
+      <p>Real-time embedded safety system detecting fire and gas leaks using sensors with automated alert mechanisms for safety monitoring.</p>
+      <div class="project-tech">
+        <span class="tech-tag">Embedded C</span>
+        <span class="tech-tag">IoT</span>
+        <span class="tech-tag">Sensors</span>
+      </div>
+    </div>
 
+    <div class="project-card reveal">
+      <div class="project-header">
+        <span class="project-icon">🧠</span>
+        <span class="project-badge badge-academic">Major Project</span>
+      </div>
+      <h3>Brain Tumor Detection (MRI + SVM)</h3>
+      <p>ML model using Python for semantic segmentation of brain tumors from MRI images, applying image processing and Support Vector Machine algorithms.</p>
+      <div class="project-tech">
+        <span class="tech-tag">Python</span>
+        <span class="tech-tag">SVM</span>
+        <span class="tech-tag">Image Processing</span>
+        <span class="tech-tag">ML</span>
+      </div>
+    </div>
 
-<div class="project-card">
+    <div class="project-card reveal">
+      <div class="project-header">
+        <span class="project-icon">🗣️</span>
+        <span class="project-badge badge-live">GitHub</span>
+      </div>
+      <h3>Language Learning App</h3>
+      <p>Application for learning daily vocabulary and sentences with a clean, intuitive UI design for smooth language acquisition.</p>
+      <div class="project-tech">
+        <span class="tech-tag">HTML</span>
+        <span class="tech-tag">CSS</span>
+        <span class="tech-tag">JavaScript</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/Vishnu-merige/learn-language" target="_blank">↗ GitHub</a>
+      </div>
+    </div>
 
-<h3>Scientific Calculator</h3>
-
-<p>Advanced calculator built using HTML, CSS, and JavaScript with scientific functions.</p>
-
-<a href="https://github.com/Vishnu-merige/caluculator-" target="_blank">GitHub</a>
-
-</div>
-
-
-<div class="project-card">
-
-<h3>Language Learning App</h3>
-
-<p>Application for learning daily vocabulary and sentences with clean UI design.</p>
-
-<a href="https://github.com/Vishnu-merige/learn-language" target="_blank">GitHub</a>
-
-</div>
-
-<div class="project-card">
-
-<h3>Next.js Internship Project</h3>
-
-<p>Responsive landing page built using Next.js and TypeScript.</p>
-
-<a href="https://github.com/Vishnu-merige/using-Next.js-and-typescript-creating-UI" target="_blank">GitHub</a>
-
-</div>
-
-</div>
-
+  </div>
 </section>
 
-<!-- CONTACT -->
+<!-- ── EDUCATION ── -->
+<section id="education">
+  <div class="section-tag">05 / Education</div>
+  <h2 class="section-title">Academic <span>Background</span></h2>
+  <div class="edu-timeline reveal">
+    <div class="edu-item">
+      <div class="edu-degree">B.Tech — Electronics & Communication Engineering</div>
+      <div class="edu-institution">Mallareddy Engineering College, Hyderabad</div>
+      <div class="edu-meta">
+        <span class="edu-year">2022 – 2026</span>
+        <span class="edu-grade">CGPA: 7.5</span>
+      </div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-degree">Intermediate (MPC)</div>
+      <div class="edu-institution">TSRS & JC, Toopran</div>
+      <div class="edu-meta">
+        <span class="edu-year">2019 – 2021</span>
+        <span class="edu-grade">82%</span>
+      </div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-degree">SSC (10th Grade)</div>
+      <div class="edu-institution">ZPHS Mardi</div>
+      <div class="edu-meta">
+        <span class="edu-year">2019</span>
+        <span class="edu-grade">CGPA: 9.2</span>
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- ── CERTIFICATIONS ── -->
+<section id="certifications">
+  <div class="section-tag">06 / Certifications</div>
+  <h2 class="section-title">Credentials & <span>Training</span></h2>
+  <div class="cert-grid reveal">
+    <div class="cert-card">
+      <span class="cert-icon">📜</span>
+      <div>
+        <div class="cert-name">C & Python Programming</div>
+        <div class="cert-issuer">Skilltimate Technologies</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <span class="cert-icon">📜</span>
+      <div>
+        <div class="cert-name">Java, Python & Data Structures</div>
+        <div class="cert-issuer">Tutors Campus</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <span class="cert-icon">☁️</span>
+      <div>
+        <div class="cert-name">Microsoft Azure AI Fundamentals</div>
+        <div class="cert-issuer">Microsoft</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
 <section id="contact">
-
-<h2>Contact Me</h2>
-
-<p>Email: <a href="mailto:vishnumerige157@gmail.com">vishnumerige157@gmail.com</a></p>
-
-<p>Phone: <a href="tel:+919502273648">+91 9502273648</a></p>
-
-<div class="social">
-
-<a href="https://github.com/Vishnu-merige" target="_blank">GitHub</a>
-
-<a href="#" target="_blank">LinkedIn</a>
-
-</div>
-
+  <div class="section-tag">07 / Contact</div>
+  <h2 class="section-title">Get In <span>Touch</span></h2>
+  <div class="contact-inner">
+    <p>I'm currently open to full-time roles, internships, and freelance projects. Let's build something great together!</p>
+    <div class="contact-grid">
+      <a href="mailto:vishnumerige157@gmail.com" class="contact-link">
+        <span class="icon">✉️</span> vishnumerige157@gmail.com
+      </a>
+      <a href="tel:+919502273648" class="contact-link">
+        <span class="icon">📞</span> +91 9502273648
+      </a>
+      <a href="https://github.com/Vishnu-merige" target="_blank" class="contact-link">
+        <span class="icon">🐙</span> GitHub
+      </a>
+      <a href="https://vishnu-merige.github.io/portfolio/" target="_blank" class="contact-link">
+        <span class="icon">🌐</span> Portfolio
+      </a>
+    </div>
+    <a href="mailto:vishnumerige157@gmail.com" class="btn">Send Me a Message ↗</a>
+  </div>
 </section>
 
 <footer>
-
-<p>© 2026 Vishnu Merige | All Rights Reserved</p>
-
+  <p>© 2026 <span>Vishnu Merige</span> · Built with passion in Hyderabad, India</p>
 </footer>
 
-<script src="script.js"></script>
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => observer.observe(el));
 
+  // Stagger project cards
+  document.querySelectorAll('.project-card').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.07}s`;
+  });
+
+  // Active nav highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+    });
+  });
+</script>
 </body>
-
 </html>
